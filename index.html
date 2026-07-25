@@ -354,11 +354,76 @@
     display:block;
     margin-top:.5rem;
   }
+
+  /* SONG BOX */
+  .song-box{
+    position:fixed;
+    top:16px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:50;
+    background:var(--paper);
+    border:1px solid rgba(181,85,111,.25);
+    border-radius:999px;
+    padding:.55rem .6rem .55rem 1.1rem;
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+    box-shadow:0 14px 30px -16px rgba(140,58,82,.5);
+    max-width:92vw;
+  }
+  .song-info{ display:flex; align-items:center; gap:.55rem; }
+  .song-emoji{ font-size:1.1rem; }
+  .song-label{ font-size:.65rem; color:var(--sage); }
+  .song-name{ font-size:.82rem; color:var(--rose-deep); font-weight:700; white-space:nowrap; }
+  .song-btn{
+    background:var(--rose);
+    color:var(--paper);
+    border:none;
+    border-radius:999px;
+    padding:.5rem 1rem;
+    font-family:'Tajawal',sans-serif;
+    font-size:.78rem;
+    cursor:pointer;
+    transition:background .25s ease, transform .25s ease;
+    white-space:nowrap;
+  }
+  .song-btn:hover{ background:var(--rose-deep); transform:translateY(-1px); }
+  .song-player{
+    position:fixed;
+    bottom:16px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:50;
+    width:min(320px,88vw);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 20px 40px -18px rgba(140,58,82,.55);
+    display:none;
+  }
+  .song-player.show{ display:block; }
+  .song-player iframe{ width:100%; height:180px; display:block; border:none; }
+  @media (max-width:520px){
+    .song-box{ padding:.5rem .5rem .5rem .9rem; }
+    .song-name{ font-size:.72rem; }
+  }
 </style>
 </head>
 <body>
 
 <div id="petals"></div>
+
+<div class="song-box" id="songBox">
+  <div class="song-info">
+    <span class="song-emoji">🎵</span>
+    <div class="song-text">
+      <div class="song-label">أغنية منقّاة ليكي بس</div>
+      <div class="song-name">Perfect — Ed Sheeran</div>
+    </div>
+  </div>
+  <button class="song-btn" onclick="playSong()" id="songBtn">▶ شغّليها</button>
+</div>
+<div class="song-player" id="songPlayer"></div>
 
 <section class="hero">
   <div class="eyebrow">هدية بسيطة لأحلى واحدة</div>
@@ -485,6 +550,21 @@
     env.classList.add('open');
     setTimeout(()=>{ reveal.classList.add('show'); },350);
     label.textContent = 'بتحبك أوي يا جيجي 🤍';
+  }
+
+  // Song box
+  function playSong(){
+    const player = document.getElementById('songPlayer');
+    const btn = document.getElementById('songBtn');
+    if(!player.classList.contains('show')){
+      player.innerHTML = '<iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&rel=0" title="Perfect - Ed Sheeran" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      player.classList.add('show');
+      btn.textContent = '⏸ إخفاء';
+    } else {
+      player.classList.remove('show');
+      player.innerHTML = '';
+      btn.textContent = '▶ شغّليها';
+    }
   }
 
   // Floating petals
